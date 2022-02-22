@@ -23,3 +23,7 @@ Key Links:
 * [Discussion/Support](https://docs.qgroundcontrol.com/en/Support/Support.html)
 * [Contributing](https://dev.qgroundcontrol.com/en/contribute/)
 * [License](https://github.com/mavlink/qgroundcontrol/blob/master/COPYING.md)
+
+## Dockerfile
+
+This repository contains a Dockerfile which purpose is automating the installation process of Gazebo, PX4-Autopilot and QGroundControl. The Docker image uses [Ubuntu LXDE](https://hub.docker.com/r/dorowu/ubuntu-desktop-lxde-vnc/) as OS and provides a stable version of [Gazebo](http://gazebosim.org/) to develop robot simulation. It also provides the installation of [PX4-Autopilot](https://px4.io/), which allows usefull tools for drone simulation developers.
