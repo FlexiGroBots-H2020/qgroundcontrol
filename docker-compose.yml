@@ -2,7 +2,7 @@ version: '3'
 
 services:
   gazebo:
-    build: .
+    build: ./Dockerfile_gz
     tty: true
     healthcheck:
       test: "exit 0"
@@ -19,7 +19,7 @@ services:
           - gazebo
 
   qgroundcontrol:
-    build: .
+    build: ./Dockerfile_qgc
     #image: ubuntu-qground
     ports:
       - "14540-14561:14540-14561/udp"
