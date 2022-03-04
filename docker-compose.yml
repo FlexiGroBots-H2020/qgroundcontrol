@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  gazebo:
+    build: .
+    tty: true
+    healthcheck:
+      test: "exit 0"
+      interval: 15s
+      timeout: 15s
+      retries: 5
+    #image: ubun-gaz
+    ports:
+      - "14580:14580/udp"
+      - "18570:18570/udp"
+    networks:
+      data_network:
+        aliases:
+          - gazebo
+
+  qgroundcontrol:
+    build: .
+    #image: ubuntu-qground
+    ports:
+      - "14540-14561:14540-14561/udp"
+      - "4560:4560/tcp"
+    depends_on:
+      gazebo:
+        condition: service_healthy
+    networks:
+      data_network:
+        aliases:
+          - qgroundcontrol
+    environment:
+      - DISPLAY=192.168.1.100:0.0
+    devices:
+      - /dev/fuse
+    cap_add:
+      - SYS_ADMIN
+
+
+networks:
+    data_network:
+      external: false
