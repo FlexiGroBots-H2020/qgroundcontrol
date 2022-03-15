@@ -4,9 +4,11 @@ RUN apt-get update
 RUN apt install gstreamer1.0-plugins-bad gstreamer1.0-libav gstreamer1.0-gl -y
 RUN apt-get install fuse -y
 RUN apt-get install wget -y
+RUN apt-get install vim -y
 
 # Install git
 RUN apt-get install -y git
+RUN apt-get update
 RUN apt-get install lsb-core -y
 RUN apt-get update && apt-get -y install sudo
 
@@ -40,7 +42,5 @@ RUN cd /home/ubuntu && mkdir px4_autopilot
 # Installing px4
 RUN cd /home/ubuntu/px4_autopilot && git clone https://github.com/PX4/PX4-Autopilot.git --recursive 
 RUN cd /home/ubuntu/px4_autopilot/PX4-Autopilot/Tools/setup && ./ubuntu.sh
-# Deploy drone
-#RUN cd /home/ubuntu/px4_autopilot/PX4-Autopilot && make px4_sitl gazebo
 
-#ENTRYPOINT cd /home/ubuntu/px4_autopilot/PX4-Autopilot && HEADLESS=1 make px4_sitl gazebo
+COPY px4-rc.mavlink /home/ubuntu/px4_autopilot/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/
