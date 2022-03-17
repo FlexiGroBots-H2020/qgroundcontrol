@@ -1,15 +1,18 @@
 version: '3'
 
 services:
+    
   gazebo:
-    build: ./Dockerfile_gz
+    build: 
+      context: ./
+      dockerfile: Dockerfile_gz
+    #image: ubun-gaz
     tty: true
     healthcheck:
       test: "exit 0"
       interval: 15s
       timeout: 15s
       retries: 5
-    #image: ubun-gaz
     ports:
       - "14580:14580/udp"
       - "18570:18570/udp"
@@ -19,7 +22,9 @@ services:
           - gazebo
 
   qgroundcontrol:
-    build: ./Dockerfile_qgc
+    build: 
+      context: ./
+      dockerfile: Dockerfile_qgc
     #image: ubuntu-qground
     ports:
       - "14540-14561:14540-14561/udp"
@@ -32,7 +37,7 @@ services:
         aliases:
           - qgroundcontrol
     environment:
-      - DISPLAY=192.168.1.100:0.0
+      - DISPLAY=172.24.93.47:0.0
     devices:
       - /dev/fuse
     cap_add:

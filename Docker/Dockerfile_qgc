@@ -1,28 +1,31 @@
+# Using last ubuntu version
 FROM ubuntu:latest
 
+# Install packages
 RUN apt-get update
 RUN apt install gstreamer1.0-plugins-bad gstreamer1.0-libav gstreamer1.0-gl -y
 RUN apt-get install fuse -y
 RUN apt-get install wget -y
+RUN apt-get install -y python3-pip
 
-# Download
-
+# Install graphical user interface packages
 RUN apt-get install -y libpulse-dev
 RUN apt-get install -y libxcb-xinerama0
 RUN apt-get install -y libxkbcommon-x11-0
 RUN apt-get install -y '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev
 RUN apt-get install -y libxcb-util-dev
-RUN apt-get install -y python3-pip
-
 RUN pip3 install pyqt5
 ENV QT_DEBUG_PLUGINS=1
 
-# Install image file
+# Setting up permissions
 RUN useradd -u 8877 ubuntu
 RUN mkdir /home/ubuntu
 RUN chown ubuntu /home/ubuntu
 USER ubuntu
+
+# Downloading and enabling permissions
 RUN cd /home/ubuntu && mkdir qgroundcontrol && cd qgroundcontrol && wget https://d176tv9ibo4jno.cloudfront.net/latest/QGroundControl.AppImage
 RUN cd /home/ubuntu/qgroundcontrol && chmod +x ./QGroundControl.AppImage
 
+#Running QGC
 ENTRYPOINT /home/ubuntu/qgroundcontrol/QGroundControl.AppImage

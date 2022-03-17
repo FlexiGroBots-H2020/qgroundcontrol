@@ -1,46 +1,41 @@
+# Using last ubuntu version
 FROM ubuntu:latest
 
+# Install packages
 RUN apt-get update
 RUN apt install gstreamer1.0-plugins-bad gstreamer1.0-libav gstreamer1.0-gl -y
 RUN apt-get install fuse -y
 RUN apt-get install wget -y
-RUN apt-get install vim -y
-
-# Install git
 RUN apt-get install -y git
 RUN apt-get update
 RUN apt-get install lsb-core -y
 RUN apt-get update && apt-get -y install sudo
+RUN apt-get install -y python3-pip
 
-
-# Download
+# Install graphical user interface packages, it can be omitted if GUI is not necessary
 RUN apt-get install -y libpulse-dev
 RUN apt-get install -y libxcb-xinerama0
 RUN apt-get install -y libxkbcommon-x11-0
 RUN apt-get install -y '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev
 RUN apt-get install -y libxcb-util-dev
-RUN apt-get install -y python3-pip
-
 RUN pip3 install pyqt5
 ENV QT_DEBUG_PLUGINS=1
 
-# Install Gzebo
+# Installing Gzebo
 RUN curl -sSL http://get.gazebosim.org | sh
 
-# Install image file
-#RUN useradd -u 8877 ubuntu
+# Setting up permissions
 RUN adduser --disabled-password --gecos '' ubuntu
 RUN adduser ubuntu sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
-#RUN mkdir /home/ubuntu
-#RUN chown ubuntu /home/ubuntu
 USER ubuntu
 
 # Creating px4 folder
 RUN cd /home/ubuntu && mkdir px4_autopilot
+
 # Installing px4
 RUN cd /home/ubuntu/px4_autopilot && git clone https://github.com/PX4/PX4-Autopilot.git --recursive 
 RUN cd /home/ubuntu/px4_autopilot/PX4-Autopilot/Tools/setup && ./ubuntu.sh
 
+#Copyig a modified file
 COPY px4-rc.mavlink /home/ubuntu/px4_autopilot/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/
