@@ -20,6 +20,12 @@ services:
       data_network:
         aliases:
           - gazebo
+    environment:
+      - DISPLAY=172.28.112.1:0.0
+    devices:
+      - /dev/fuse
+    cap_add:
+      - SYS_ADMIN
 
   qgroundcontrol:
     build: 
